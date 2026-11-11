@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6dce9">
+  <meta name="description" content="إلى جنّات... لأنكِ أجمل أقداري، رسالة 11:11">
+  <title>إلى جنّات ❤️ 11:11</title>
+  <style>
+    :root{color-scheme:light;--text:#613550;--pink:#bf3d71}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:Tahoma,"Segoe UI",Arial,sans-serif;color:var(--text);text-align:center;overflow-x:hidden;
+      background:radial-gradient(circle at 22% 10%,#fffafc 0,transparent 34%),radial-gradient(circle at 82% 78%,#fbc9dc 0,transparent 42%),linear-gradient(140deg,#fff6fa,#e9dcf4,#f9cddd)}
+    button{font:inherit;border:0;border-radius:999px;background:var(--pink);color:white;padding:16px 28px;cursor:pointer;box-shadow:0 9px 28px #b24e7845;font-size:17px;touch-action:manipulation}
+    button:focus-visible,a:focus-visible{outline:3px solid #7e2752;outline-offset:4px}
+    .intro{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(145deg,#fff4fa,#e9d7f4,#ffd8e8);transition:opacity .75s,visibility .75s}
+    .intro.hide{opacity:0;visibility:hidden;pointer-events:none}.envelope{font-size:66px;filter:drop-shadow(0 9px 13px #ba6b9952)}
+    .intro h1{font-size:clamp(28px,7vw,52px);line-height:1.7;margin:8px 0 13px}.intro p{line-height:2;font-size:17px;margin:0 0 29px}
+    main{max-width:760px;margin:auto;padding:28px 12px 65px;opacity:0;transform:translateY(20px);transition:opacity .9s,transform .9s;position:relative;z-index:1}
+    main.show{opacity:1;transform:none}.topline{font-size:13px;letter-spacing:.24em;color:#a65a7e}
+    h2{font-size:clamp(22px,5vw,35px);font-weight:500;line-height:1.65;margin:11px 0 20px}
+    .letter{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 16px 47px #805e8032}
+    .note{font-size:14px;opacity:.76;margin:24px 0}.heart{position:fixed;bottom:-40px;pointer-events:none;animation:float linear forwards;opacity:.6;z-index:0}
+    .music{display:none;position:fixed;left:14px;bottom:17px;z-index:3;font-size:14px;padding:12px 18px;box-shadow:0 8px 30px #8b477154}.music.show{display:block}
+    .song-info{color:#995b78;font-size:13px;margin:0 0 18px;line-height:1.8}
+    .audio-error{display:none;margin:14px auto;color:#8b3057;background:#fff7fa;padding:12px;max-width:550px;border-radius:12px;font-size:14px}
+    .audio-error.show{display:block}
+    @keyframes float{to{transform:translateY(-112vh) rotate(35deg);opacity:0}}
+    @media(prefers-reduced-motion:reduce){.heart{display:none}*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <section class="intro" id="intro" aria-label="مقدمة رسالة الحب">
+    <div class="envelope" aria-hidden="true">💌</div>
+    <h1>إلى جنّات...<br>لأنكِ أجمل أقداري ❤️</h1>
+    <p>في يوم 11:11، عندي إلكِ رسالة من قلبي</p>
+    <button type="button" id="open">افتحي رسالتكِ ♡</button>
+  </section>
+  <main id="main">
+    <div class="topline">11 : 11</div>
+    <h2>أحبكِ يا أجمل قدر صار بحياتي ❤️</h2>
+    <p class="song-info">🎶 الحب الأبدي | أصالة وماجد المهندس</p>
+    <img class="letter" src="letter.jpg" alt="رسالة حب إلى جنّات بمناسبة 11:11" width="1449" height="2048">
+    <p class="note">11:11 • أمنية صارت حقيقة ♡</p>
+    <p class="audio-error" id="audioError" role="status">إذا ما اشتغلت الموسيقى، اضغطي «تشغيل الموسيقى» مرة ثانية ♡</p>
+  </main>
+  <button type="button" class="music" id="music" aria-label="تشغيل أو إيقاف الموسيقى">♫ إيقاف الموسيقى</button>
+  <audio id="audio" src="music.mp3" loop preload="auto" playsinline></audio>
+  <script>
+    const intro=document.getElementById('intro'),main=document.getElementById('main');
+    const audio=document.getElementById('audio'),music=document.getElementById('music');
+    const audioError=document.getElementById('audioError');
+    let opened=false;
+    audio.volume=0.75;
+    function syncMusicButton(){
+      music.classList.add('show');
+      music.textContent=audio.paused?'♫ تشغيل الموسيقى':'♫ إيقاف الموسيقى';
+      music.setAttribute('aria-label',audio.paused?'تشغيل الموسيقى':'إيقاف الموسيقى');
+    }
+    document.getElementById('open').addEventListener('click',()=>{
+      if(opened)return;opened=true;
+      // Start audio inside the user's button interaction for mobile playback permissions.
+      const attempt=audio.play();
+      intro.classList.add('hide');main.classList.add('show');
+      music.classList.add('show');
+      if(attempt && typeof attempt.catch==='function')attempt.catch(()=>{
+        audioError.classList.add('show');syncMusicButton();
+      });
+      syncMusicButton();
+    });
+    music.addEventListener('click',()=>{
+      if(audio.paused){
+        const attempt=audio.play();
+        if(attempt && typeof attempt.catch==='function')attempt.catch(()=>audioError.classList.add('show'));
+      }else{audio.pause();}
+      syncMusicButton();
+    });
+    audio.addEventListener('play',()=>{audioError.classList.remove('show');syncMusicButton();});
+    audio.addEventListener('pause',syncMusicButton);
+    audio.addEventListener('error',()=>{audioError.classList.add('show');syncMusicButton();});
+    setInterval(()=>{
+      if(!opened || document.hidden)return;
+      const h=document.createElement('span');h.className='heart';h.textContent=Math.random()>.5?'♡':'♥';
+      h.style.left=Math.random()*100+'vw';h.style.color=['#d95189','#d48fbc','#a77cba'][Math.floor(Math.random()*3)];
+      h.style.fontSize=(12+Math.random()*19)+'px';h.style.animationDuration=(7+Math.random()*7)+'s';
+      document.body.append(h);setTimeout(()=>h.remove(),15000);
+    },1000);
+  </script>
+</body>
+</html>
